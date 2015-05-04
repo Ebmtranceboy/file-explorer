@@ -2,6 +2,7 @@ package joel.duet.fileexplorer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -35,14 +37,6 @@ import android.widget.Toast;
 
 public class ExplorateurActivity extends ListActivity implements OnSharedPreferenceChangeListener {
     /**
-     * Représente le texte qui s'affiche quand la liste est vide
-     */
-    private TextView mEmpty = null;
-    /**
-     * La liste qui contient nos fichiers et répertoires
-     */
-    private ListView mList = null;
-    /**
      * Notre Adapter personnalisé qui lie les fichiers à la liste
      */
     private FileAdapter mAdapter = null;
@@ -61,23 +55,24 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
      */
     private boolean mCountdown = false;
 
-    /**
-     * Les préférences partagées de cette application
-     */
-    private SharedPreferences mPrefs = null;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explorateur);
 
         // On récupère la ListView de notre activité
-        mList = (ListView) getListView();
+        /*
+        La liste qui contient nos fichiers et répertoires
+        */
+        ListView mList = getListView();
 
         // On vérifie que le répertoire externe est bien accessible
         if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             // S'il ne l'est pas, on affiche un message
-            mEmpty = (TextView) mList.getEmptyView();
+            /*
+            Représente le texte qui s'affiche quand la liste est vide
+            */
+            TextView mEmpty = (TextView) mList.getEmptyView();
             mEmpty.setText("Vous ne pouvez pas accéder aux fichiers");
         } else {
             // S'il l'est...
@@ -85,7 +80,10 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
             registerForContextMenu(mList);
 
             // On récupère les préférences de l'application
-            mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+            /*
+            Les préférences partagées de cette application
+            */
+            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
             // On indique que l'acitivté est à l'écoute des changements de préférence
             mPrefs.registerOnSharedPreferenceChangeListener(this);
             // On récupère la couleur voulue par l'utilisateur, par défaut il s'agira du rouge
@@ -101,9 +99,8 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
             File[] fichiers = mCurrentFile.listFiles();
 
             // On transforme le tableau en une structure de données de taille variable
-            ArrayList<File> liste = new ArrayList<File>();
-            for(File f : fichiers)
-                liste.add(f);
+            ArrayList<File> liste = new ArrayList<>();
+            Collections.addAll(liste, fichiers);
 
             mAdapter = new FileAdapter(this, android.R.layout.simple_list_item_1, liste);
             // On ajoute l'adaptateur à la liste
@@ -119,7 +116,7 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
                                         int position, long id) {
                     File fichier = mAdapter.getItem(position);
                     // Si le fichier est un répertoire...
-                    if(fichier.isDirectory())
+                    if (fichier.isDirectory())
                         // On change de répertoire courant
                         updateDirectory(fichier);
                     else
@@ -171,14 +168,14 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         // On récupère la position de l'item concerné
         File fichier = mAdapter.getItem(info.position);
         switch (item.getItemId()) {
             case R.id.deleteItem:
                 mAdapter.remove(fichier);
-                fichier.delete();
-                return true;
+                return fichier.delete();
 
             case R.id.seeItem:
                 seeItem(fichier);
@@ -241,9 +238,8 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
         mAdapter.sort();
     }
 
-
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
         // Si on a appuyé sur le retour arrière
         if(keyCode == KeyEvent.KEYCODE_BACK) {
             // On prend le parent du répertoire courant
@@ -253,7 +249,7 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
                 updateDirectory(parent);
             else {
                 // Sinon, si c'est la première fois qu'on fait un retour arrière
-                if(mCountdown != true) {
+                if(!mCountdown) {
                     // On indique à l'utilisateur qu'appuyer dessus une seconde fois le fera sortir
                     Toast.makeText(this, "Nous sommes déjà à la racine ! Cliquez une seconde fois pour quitter", Toast.LENGTH_SHORT).show();
                     mCountdown  = true;
@@ -314,7 +310,7 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
          * Construit la vue en fonction de l'item
          */
         public View getView(int position, View convertView, ViewGroup parent) {
-            TextView vue = null;
+            TextView vue;
 
             if(convertView != null)
                 vue = (TextView) convertView;

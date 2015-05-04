@@ -1,5 +1,4 @@
 <resources>
-
     <string name="app_name">Explorateur</string>
     <string name="menu_options">Options</string>
     <string name="see_item">Voir</string>
@@ -7,5 +6,4 @@
     <string name="couleurs_pref">Préférences visuelles</string>
     <string name="title_activity_explorateur">ExplorateurActivity</string>
     <string name="title_activity_exploreur_preference">ExploreurPreference</string>
-
 </resources>

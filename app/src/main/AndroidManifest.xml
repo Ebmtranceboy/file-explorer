@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ExploreurPreference"
+            android:label="@string/title_activity_exploreur_preference" >
+        </activity>
     </application>
 
 </manifest>
