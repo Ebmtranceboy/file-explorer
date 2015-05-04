@@ -102,7 +102,7 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
             ArrayList<File> liste = new ArrayList<>();
             Collections.addAll(liste, fichiers);
 
-            mAdapter = new FileAdapter(this, android.R.layout.simple_list_item_1, liste);
+            mAdapter = new FileAdapter(this, liste);
             // On ajoute l'adaptateur à la liste
             mList.setAdapter(mAdapter);
             // On trie la liste
@@ -140,7 +140,7 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
         {
             case R.id.menu_options:
                 // Intent explicite
-                Intent i = new Intent(this, ExploreurPreference.class);
+                Intent i = new Intent(this, ExploreurPreferenceWithHeader.class);
                 startActivity(i);
                 return true;
         }
@@ -214,7 +214,7 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
      * @param pFile le nouveau répertoire dans lequel aller
      */
 
-    public void updateDirectory(File pFile) {
+    private void updateDirectory(File pFile) {
         // On change le titre de l'activité
         setTitle(pFile.getAbsolutePath());
 
@@ -266,7 +266,7 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
      * On enlève tous les éléments de la liste
      */
 
-    public void setEmpty() {
+    private void setEmpty() {
         // Si l'adapteur n'est pas vide...
         if(!mAdapter.isEmpty())
             // Alors on le vide !
@@ -298,9 +298,9 @@ public class ExplorateurActivity extends ListActivity implements OnSharedPrefere
 
         }
 
-        public FileAdapter(Context context, int textViewResourceId,
+        public FileAdapter(Context context,
                            List<File> objects) {
-            super(context, textViewResourceId, objects);
+            super(context, android.R.layout.simple_list_item_1, objects);
             mInflater = LayoutInflater.from(context);
         }
 

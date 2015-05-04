@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <PreferenceCategory android:title="@string/couleurs_pref" >
+    <PreferenceCategory android:title="@string/options_rep" >
         <joel.duet.fileexplorer.ColorPickerPreferenceDialog
             android:key="repertoireColorPref"
-            android:title="Répertoires"
+            android:title="Couleur"
             android:summary="Choisir une couleur des répertoires"
             android:dialogTitle="Couleur des répertoires" />
     </PreferenceCategory>

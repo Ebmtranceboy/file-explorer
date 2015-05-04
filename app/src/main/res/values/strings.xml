@@ -3,7 +3,7 @@
     <string name="menu_options">Options</string>
     <string name="see_item">Voir</string>
     <string name="delete_item">Supprimer</string>
-    <string name="couleurs_pref">Préférences visuelles</string>
+    <string name="options_rep">Options des répertoires</string>
     <string name="title_activity_explorateur">ExplorateurActivity</string>
     <string name="title_activity_exploreur_preference">ExploreurPreference</string>
 </resources>

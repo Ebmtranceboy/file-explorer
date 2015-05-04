@@ -25,7 +25,7 @@ public class ColorPickerView extends View {
 	private Paint mCenterPaint;
 	private final int[] mColors;
 	private OnColorChangedListener mListener;
-	RectF oval;
+	private RectF oval;
 
 	ColorPickerView(Context c, OnColorChangedListener l, int color) {
 		super(c);
