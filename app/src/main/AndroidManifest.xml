@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".ExplorateurActivity"
-            android:label="@string/app_name" >
+            android:label="@string/title_activity_explorateur" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ExploreurPreference"
+            android:name=".ExploreurPreferenceWithHeader"
             android:label="@string/title_activity_exploreur_preference" >
         </activity>
     </application>
